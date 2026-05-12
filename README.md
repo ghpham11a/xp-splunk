@@ -207,6 +207,48 @@ index=main "HTTP_RESPONSE" "splunk-test"
 3. Click a trace to see the full span waterfall (method, path, duration, status)
 4. Click **Logs** on a trace to see correlated log lines (if Log Observer Connect is enabled)
 
+## Troubleshooting
+
+### Splunk Enterprise license expired
+If you see `Your Splunk license expired` when searching, switch to the free license:
+**Settings** > **Licensing** > **Change license group** > **Free license** > **Save** > **Restart**. The free license (500MB/day) doesn't expire.
+
+### K8s unreachable after Docker Desktop restart
+If `kubectl` fails with `tls: failed to verify certificate: x509: certificate signed by unknown authority`, the K8s certs were regenerated. Fix: **Docker Desktop** > **Settings** > **Kubernetes** > **Reset Kubernetes Cluster**. Then run `deploy.bat` again.
+
+### Collector Helm install fails with schema error
+The Splunk OTel Collector Helm chart schema changes between versions. If you get `Additional property X is not allowed`, check the current valid values with:
+```bash
+helm show values splunk-otel-collector-chart/splunk-otel-collector | grep -A 20 "splunkObservability:"
+```
+
+### Traces not showing in Observability Cloud
+- **Wait 2-5 minutes** — first traces take time to appear
+- **Check the Environment filter** in APM — set it to **All** or **local** (our configmap sets `deployment.environment=local`)
+- **Check the time range** — set to **Last 15 minutes**
+- **Verify the collector is running**: `kubectl get pods -n splunk`
+- **Check collector logs for errors**: `kubectl logs -n splunk -l app=splunk-otel-collector --tail=50`
+
+### No logs in Splunk Enterprise
+- Verify HEC is healthy: `curl http://localhost:8088/services/collector/health`
+- Test HEC directly: `curl http://localhost:8088/services/collector/event -H "Authorization: Splunk <your-hec-token>" -d "{\"event\": \"test\"}"`
+- Make sure the HEC token is set in `.env` as `SPLUNK_HEC_TOKEN`
+- Check that **Global Settings** > **All Tokens** is **Enabled** in Splunk Enterprise under **Settings** > **Data Inputs** > **HTTP Event Collector**
+
+### Old agent (e.g. New Relic) still injecting
+If you previously had another APM operator installed (New Relic, Datadog, etc.), it may still be injecting its agent into new pods. Check for leftover operators:
+```bash
+helm list -A
+kubectl get pods -A | grep -i newrelic
+```
+Remove with `helm uninstall <release-name>`, then rebuild the Docker image with `docker build --no-cache -t xp-splunk-springboot:latest .` to clear cached layers.
+
+### curl line continuation errors on Windows
+Multi-line `curl` commands with `\` don't work in Windows cmd. Use single-line commands instead:
+```bash
+curl -X POST http://localhost:8080/api/items -H "Content-Type: application/json" -d "{\"name\": \"test\", \"description\": \"hello\"}"
+```
+
 ## References
 
 - [Splunk OTel Java agent docs](https://docs.splunk.com/observability/en/gdi/get-data-in/application/java/get-started.html)
