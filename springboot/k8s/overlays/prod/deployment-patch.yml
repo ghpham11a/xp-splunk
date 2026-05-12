@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+  namespace: springboot
+spec:
+  replicas: 3
+  template:
+    spec:
+      containers:
+        - name: springboot
+          image: your-registry/xp-splunk-springboot:latest
+          imagePullPolicy: Always

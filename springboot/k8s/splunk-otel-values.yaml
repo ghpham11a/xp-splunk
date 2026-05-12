@@ -1,0 +1,21 @@
+clusterName: docker-desktop
+
+splunkObservability:
+  realm: "${SPLUNK_REALM}"
+  accessToken: "${SPLUNK_ACCESS_TOKEN}"
+
+splunkPlatform:
+  endpoint: http://host.docker.internal:8088
+  token: "${SPLUNK_HEC_TOKEN}"
+  index: main
+  logsEnabled: true
+
+agent:
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc:
+            endpoint: 0.0.0.0:4317
+          http:
+            endpoint: 0.0.0.0:4318

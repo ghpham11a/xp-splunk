@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls:*)",
+      "Bash(cd:*)",
+      "Read(//c/tmp/**)",
+      "Bash(unzip -q ~/.m2/repository/com/newrelic/telemetry/micrometer-registry-new-relic/0.10.0/micrometer-registry-new-relic-0.10.0-sources.jar)",
+      "Bash(find:*)"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+apiVersion: opentelemetry.io/v1alpha1
+kind: Instrumentation
+metadata:
+  name: splunk-otel-java
+  namespace: springboot
+spec:
+  exporter:
+    endpoint: http://splunk-otel-collector:4318
+  propagators:
+    - tracecontext
+    - baggage
+    - b3
+  java:
+    image: ghcr.io/signalfx/splunk-otel-java/splunk-otel-java:latest
+    env:
+      - name: SPLUNK_ACCESS_TOKEN
+        valueFrom:
+          secretKeyRef:
+            name: splunk-secret
+            key: access-token
+      - name: OTEL_SERVICE_NAME
+        value: springboot

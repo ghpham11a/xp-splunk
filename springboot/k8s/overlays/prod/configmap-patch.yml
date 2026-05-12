@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: springboot-config
+  namespace: springboot
+data:
+  OTEL_RESOURCE_ATTRIBUTES: "deployment.environment=prod"
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://splunk-otel-collector-agent.splunk.svc.cluster.local:4318"
+  SPRING_PROFILES_ACTIVE: "prod"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"

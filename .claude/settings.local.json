@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(ls:*)",
+      "WebFetch(domain:www.splunk.com)",
+      "WebFetch(domain:docs.splunk.com)",
+      "Bash(cd:*)",
+      "Bash(splunk version:*)",
+      "Read(//c/Program Files/Splunk/**)",
+      "Read(//c/Program Files/**)",
+      "Bash(sc.exe query:*)",
+      "Bash(curl:*)",
+      "Bash(kubectl config:*)",
+      "Bash(helm version:*)",
+      "Bash(kubectl kustomize:*)",
+      "Bash(kubectl get:*)",
+      "Bash(kubectl:*)",
+      "Bash(docker ps:*)",
+      "Bash(helm list:*)",
+      "Bash(helm show:*)"
+    ]
+  }
+}
