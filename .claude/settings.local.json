@@ -18,7 +18,8 @@
       "Bash(kubectl:*)",
       "Bash(docker ps:*)",
       "Bash(helm list:*)",
-      "Bash(helm show:*)"
+      "Bash(helm show:*)",
+      "Bash(find:*)"
     ]
   }
 }
